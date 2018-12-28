@@ -93,7 +93,7 @@ with open('html_chunks', 'wb') as f:
 
 
 ## Only use these if need to reload the data at this step
-#with open('html_chunks', 'rb') as f:
+#with open('html_chunks.pkl', 'rb') as f:
 #    html_chunks = pickle.load(f)
 
 
@@ -143,6 +143,13 @@ text_df.to_pickle('text_df.pkl')
 
 
 #3. Preprocess text - Tram
+
+
+## Only use these if need to reload the data at this step
+#with open('text_df.pkl', 'rb') as f:
+#    text_df = pickle.load(f)
+
+
 ##3.1. Detect language
     
     
