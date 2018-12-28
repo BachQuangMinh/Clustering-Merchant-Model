@@ -4,13 +4,13 @@ Created on Thu Dec 27 15:54:11 2018
 
 @author: Minh Bach, Tram Ho
 """
-"""try again"""
+
 
 import pandas as pd
 import numpy as np
 
 #Set work dir
-dir=
+dir =
 import os
 os.chdir(dir)
 
@@ -50,7 +50,7 @@ def get_html(urllist):
     
     for url in urllist: 
         try:
-            page = requests.get(url, timeout=10) #Check the timeout here
+            page = requests.get(url, timeout=10) 
             content = page.text
             html.append(content)
             print('finish step '+str(i))
@@ -95,12 +95,51 @@ with open('html_chunks', 'wb') as f:
 ## Only use these if need to reload the data at this step
 #with open('html_chunks', 'rb') as f:
 #    html_chunks = pickle.load(f)
+
+
+from bs4 import BeautifulSoup
+
+def get_text_bs(html):
+    '''this function strips all the tags from the html'''
+    tree = BeautifulSoup(html, 'lxml')
+
+    body = tree.body
     
+    if body is None:
+        return None
+
+    for tag in body.select('script'):
+        tag.decompose()
+        
+    for tag in body.select('style'):
+        tag.decompose()
+
+    text = body.get_text(separator='\n')
+    
+    return text    
+
+
+### Apply the function
+i = 1
+
+for chunk in html_chunks:
+    
+    chunk['text'] = [get_text_bs(i) for i in chunk['html']]
+    
+    ### Strip all space 
+    chunk['text'] = chunk['text'].str.replace(r'\r|\n|\t|(\xa0)',' ').str.lstrip().str.rstrip()
+    
+    print('finish chunk ' + str(i))
+    i += 1
+
+text_chunks = html_chunks
+
 
 ##2.2. Merge chunks
-
+text_df = pd.concat(text_chunks)
 
 ##2.3. Save as pickle    
+text_df.to_pickle('text_df.pkl')
 
 
 #3. Preprocess text - Tram
@@ -111,6 +150,7 @@ with open('html_chunks', 'wb') as f:
 
 
 ##3.3. Basic processing     
+
 
 #4. Cluster - Tram
 ##4.1. Transform with pretrained TF-IDF
@@ -123,4 +163,6 @@ with open('html_chunks', 'wb') as f:
 ##5.1. Chunk of size 200
 
 
-##5.2 Save each chunk as .xlsx    
+##5.2 Save each chunk as .xlsx
+
+    
