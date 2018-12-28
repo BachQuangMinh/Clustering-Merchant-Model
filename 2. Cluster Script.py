@@ -102,7 +102,7 @@ with open('html_chunks', 'wb') as f:
 ##2.3. Save as pickle    
 
 
-#3. Preprocess text
+#3. Preprocess text - Tram
 ##3.1. Detect language
     
     
