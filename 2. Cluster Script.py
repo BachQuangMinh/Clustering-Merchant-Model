@@ -112,14 +112,14 @@ with open('html_chunks', 'wb') as f:
 
 ##3.3. Basic processing     
 
-#4. Cluster
+#4. Cluster - Tram
 ##4.1. Transform with pretrained TF-IDF
 
 
 ##4.2. Cluster with pretrained model
     
     
-#5. Chunk and save chunks
+#5. Chunk and save chunks - Minh
 ##5.1. Chunk of size 200
 
 
